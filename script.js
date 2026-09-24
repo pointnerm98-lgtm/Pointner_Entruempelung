@@ -106,6 +106,10 @@
     if (email && !isValidEmail(email.value.trim())) { showError("f-email", true); ok = false; }
     else { showError("f-email", false); }
 
+    var phone = form.elements["telefon"];
+    if (phone && !phone.value.trim()) { showError("f-phone", true); ok = false; }
+    else { showError("f-phone", false); }
+
     var privacy = form.elements["datenschutz"];
     if (privacy && !privacy.checked) { showError("f-privacy", true); ok = false; }
     else { showError("f-privacy", false); }
@@ -175,7 +179,7 @@
   });
 
   // Live-Fehler ausblenden, sobald der Nutzer korrigiert
-  ["f-name", "f-email", "f-privacy"].forEach(function (id) {
+  ["f-name", "f-email", "f-phone", "f-privacy"].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) { el.addEventListener("input", function () { showError(id, false); }); }
     if (el && el.type === "checkbox") { el.addEventListener("change", function () { showError(id, false); }); }

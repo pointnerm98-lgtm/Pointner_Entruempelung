@@ -310,21 +310,27 @@ a:hover { color: var(--accent); }
 .faq-body p { margin: 0; color: var(--ink-soft); }
 
 /* ---------- Kontakt ---------- */
-.contact-grid { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr); }
-.contact-intro p { color: var(--ink-soft); max-width: 42ch; }
-.contact-direct { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: .85rem; }
-.contact-direct li { display: flex; align-items: center; gap: .7rem; }
+/* Kopf (Titel + Text + Direktkontakt) über volle Breite, zentriert.
+   Darunter das zentrierte Formular. */
+.contact-head { text-align: center; max-width: 680px; margin: 0 auto 2.5rem; }
+.contact-head p { color: var(--ink-soft); }
+.contact-direct {
+  list-style: none; margin: 1.5rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem 1.75rem;
+}
+.contact-direct li { display: flex; align-items: center; gap: .5rem; }
 .contact-direct svg { color: var(--accent); flex: none; }
 .contact-direct a { color: var(--ink); font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
 .contact-direct a:hover { color: var(--accent-dark); }
 
 .contact-form {
+  max-width: 680px; margin: 0 auto;
   background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
   padding: clamp(1.5rem, 4vw, 2rem); box-shadow: var(--shadow);
 }
 .field { margin-bottom: 1.1rem; }
-/* Felder stehen durchgehend einzeln untereinander (eine Spalte) */
-.field-row { display: grid; gap: 0; grid-template-columns: 1fr; }
+/* Auf schmalen Screens einspaltig, ab 620px zwei Felder nebeneinander */
+.field-row { display: grid; column-gap: 1.1rem; grid-template-columns: 1fr; }
 .field label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: .4rem; }
 .field input, .field select, .field textarea {
   width: 100%; font: inherit; color: var(--ink);
@@ -351,6 +357,7 @@ a:hover { color: var(--accent); }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+.required-note { margin: 0 0 1rem; font-size: .8rem; color: var(--ink-soft); }
 .form-status { margin: 1rem 0 0; padding: .9rem 1rem; border-radius: var(--radius-sm); font-size: .95rem; font-weight: 500; }
 .form-status.is-success { background: #e7f4ec; color: #1c6b3f; border: 1px solid #b7ddc6; }
 .form-status.is-error   { background: #fbeae8; color: #a5281b; border: 1px solid #f0c3bd; }
@@ -395,6 +402,7 @@ a:hover { color: var(--accent); }
    Responsive
    ===================================================================== */
 @media (min-width: 620px) {
+  .field-row { grid-template-columns: 1fr 1fr; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .trust-grid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(3, 1fr); }
@@ -408,7 +416,6 @@ a:hover { color: var(--accent); }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .trust-grid { grid-template-columns: repeat(3, 1fr); }
   .hv-grid { grid-template-columns: 1fr 1.05fr; align-items: center; gap: 3.5rem; }
-  .contact-grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: start; gap: 3.5rem; }
 }
 
 /* ---------- Mobile-Navigation ---------- */
