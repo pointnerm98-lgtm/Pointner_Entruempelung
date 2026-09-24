@@ -1,5 +1,5 @@
 /* =====================================================================
-   [FIRMENNAME] – script.js
+   Pointner Entrümpelung – script.js
    Vanilla JS, keine externen Abhängigkeiten, keine Cookies, kein Tracking.
    ===================================================================== */
 (function () {
