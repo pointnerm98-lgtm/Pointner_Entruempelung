@@ -311,3 +311,34 @@
   });
 
 })();
+
+/* =====================================================================
+   Fixe Kontaktleiste (Mobil): erst ab dem Ende des Hero-Bereichs
+   sanft einblenden. Sichtbarkeit (Anzeige) steuert das CSS je Breite.
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  var bar = document.getElementById("mobile-bar");
+  var hero = document.querySelector(".hero");
+  if (!bar || !hero) { return; }
+
+  var show = function (on) {
+    bar.classList.toggle("is-visible", on);
+    bar.setAttribute("aria-hidden", on ? "false" : "true");
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    show(true);
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      // Hero noch (teilweise) sichtbar -> Leiste aus; Hero vorbei -> Leiste ein
+      show(!entry.isIntersecting);
+    });
+  }, { threshold: 0 });
+  io.observe(hero);
+
+})();
