@@ -186,3 +186,86 @@
   });
 
 })();
+
+/* =====================================================================
+   Vorher-Nachher-Vergleich (Vanilla JS, keine Bibliothek)
+   Maus, Touch (Pointer Events) und Tastatur (Pfeile/Home/End).
+   Ohne JS: beide Bilder untereinander mit Beschriftung (siehe CSS).
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  var ba = document.getElementById("ba");
+  if (!ba) { return; }
+  var frame = ba.querySelector(".ba-frame");
+  var handle = document.getElementById("ba-handle");
+  if (!frame || !handle) { return; }
+
+  ba.classList.add("is-ready");
+
+  var pos = 50;
+  var setPos = function (p) {
+    pos = Math.max(0, Math.min(100, p));
+    var v = Math.round(pos);
+    frame.style.setProperty("--pos", pos + "%");
+    handle.setAttribute("aria-valuenow", String(v));
+    handle.setAttribute("aria-valuetext", v + " Prozent – Vorher-Ansicht");
+  };
+  setPos(50);
+
+  var dragging = false;
+  var posFromX = function (clientX) {
+    var r = frame.getBoundingClientRect();
+    if (!r.width) { return pos; }
+    return ((clientX - r.left) / r.width) * 100;
+  };
+
+  var onDown = function (clientX, ev) {
+    dragging = true;
+    ba.classList.add("is-dragging");
+    setPos(posFromX(clientX));
+    if (ev && ev.preventDefault) { ev.preventDefault(); }
+  };
+  var onMove = function (clientX) {
+    if (dragging) { setPos(posFromX(clientX)); }
+  };
+  var onUp = function () {
+    dragging = false;
+    ba.classList.remove("is-dragging");
+  };
+
+  if (window.PointerEvent) {
+    frame.addEventListener("pointerdown", function (e) {
+      if (e.pointerId != null && frame.setPointerCapture) {
+        try { frame.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      onDown(e.clientX, e);
+    });
+    frame.addEventListener("pointermove", function (e) { onMove(e.clientX); });
+    frame.addEventListener("pointerup", onUp);
+    frame.addEventListener("pointercancel", onUp);
+  } else {
+    frame.addEventListener("mousedown", function (e) { onDown(e.clientX, e); });
+    window.addEventListener("mousemove", function (e) { onMove(e.clientX); });
+    window.addEventListener("mouseup", onUp);
+    frame.addEventListener("touchstart", function (e) { onDown(e.touches[0].clientX, e); }, { passive: false });
+    frame.addEventListener("touchmove", function (e) { onMove(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener("touchend", onUp);
+  }
+
+  handle.addEventListener("keydown", function (e) {
+    var step = e.shiftKey ? 10 : 2;
+    var handled = true;
+    switch (e.key) {
+      case "ArrowLeft":
+      case "ArrowDown": setPos(pos - step); break;
+      case "ArrowRight":
+      case "ArrowUp": setPos(pos + step); break;
+      case "Home": setPos(0); break;
+      case "End": setPos(100); break;
+      default: handled = false;
+    }
+    if (handled) { e.preventDefault(); }
+  });
+
+})();
