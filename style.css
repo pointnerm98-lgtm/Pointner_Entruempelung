@@ -222,11 +222,10 @@ a:hover { color: var(--accent); }
 .hero-lead { font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--ink-soft); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .85rem; margin: 1.6rem 0 0; }
 
-/* Vertrauenszeile: kompakt bei den Buttons (Desktop links, Mobil unter dem Bild) */
+/* Vertrauenszeile: kompakt bei den Buttons (Desktop rechts unter dem Bild, Mobil unter dem Bild) */
 .hero-trust {
   display: grid; grid-template-columns: 1fr 1fr; gap: .8rem 1.25rem;
-  list-style: none; margin: 1.6rem 0 0; padding: 1.35rem 0 0;
-  border-top: 1px solid var(--line);
+  list-style: none; margin: 1.5rem 0 0; padding: 0;
 }
 .hero-trust li { display: flex; align-items: flex-start; gap: .5rem; font-size: .92rem; font-weight: 500; color: var(--ink); }
 .hero-trust svg { color: var(--accent); flex: none; margin-top: 1px; }
@@ -529,7 +528,7 @@ a:hover { color: var(--accent); }
     column-gap: 3rem; row-gap: 1.5rem;
   }
   .hero-text { grid-area: text; }
-  .hero-media { grid-area: media; }
+  .hero-media { grid-area: media; margin-top: 1.5rem; }
   .hero-trust { grid-area: trust; align-self: start; }
 }
 
