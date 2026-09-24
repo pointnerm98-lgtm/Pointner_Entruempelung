@@ -90,6 +90,18 @@
     if (msg) { msg.hidden = !show; }
   };
 
+  // aria-invalid + aria-describedby für die Erreichbarkeitsfelder (E-Mail/Telefon)
+  var setReachInvalid = function (el, on) {
+    if (!el) { return; }
+    if (on) {
+      el.setAttribute("aria-invalid", "true");
+      el.setAttribute("aria-describedby", "contact-reach " + (el.id === "f-email" ? "err-email" : "err-phone"));
+    } else {
+      el.removeAttribute("aria-invalid");
+      el.setAttribute("aria-describedby", "contact-reach");
+    }
+  };
+
   var isValidEmail = function (value) {
     // Bewusst simpel gehalten; die eigentliche Prüfung macht der Browser/Server.
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -102,13 +114,30 @@
     if (name && !name.value.trim()) { showError("f-name", true); ok = false; }
     else { showError("f-name", false); }
 
+    // E-Mail und Telefon sind einzeln optional, aber mindestens eines ist Pflicht
     var email = form.elements["email"];
-    if (email && !isValidEmail(email.value.trim())) { showError("f-email", true); ok = false; }
-    else { showError("f-email", false); }
-
     var phone = form.elements["telefon"];
-    if (phone && !phone.value.trim()) { showError("f-phone", true); ok = false; }
-    else { showError("f-phone", false); }
+    var emailVal = email ? email.value.trim() : "";
+    var phoneVal = phone ? phone.value.trim() : "";
+    var emailErr = document.getElementById("err-email");
+    var phoneErr = document.getElementById("err-phone");
+
+    if (emailErr) { emailErr.hidden = true; }
+    if (phoneErr) { phoneErr.hidden = true; }
+    setReachInvalid(email, false);
+    setReachInvalid(phone, false);
+
+    if (!emailVal && !phoneVal) {
+      if (emailErr) { emailErr.textContent = "Bitte geben Sie E-Mail oder Telefon an."; emailErr.hidden = false; }
+      if (phoneErr) { phoneErr.textContent = "Bitte geben Sie E-Mail oder Telefon an."; phoneErr.hidden = false; }
+      setReachInvalid(email, true);
+      setReachInvalid(phone, true);
+      ok = false;
+    } else if (emailVal && !isValidEmail(emailVal)) {
+      if (emailErr) { emailErr.textContent = "Bitte geben Sie eine gültige E-Mail-Adresse an."; emailErr.hidden = false; }
+      setReachInvalid(email, true);
+      ok = false;
+    }
 
     var privacy = form.elements["datenschutz"];
     if (privacy && !privacy.checked) { showError("f-privacy", true); ok = false; }
@@ -179,10 +208,23 @@
   });
 
   // Live-Fehler ausblenden, sobald der Nutzer korrigiert
-  ["f-name", "f-email", "f-phone", "f-privacy"].forEach(function (id) {
+  ["f-name", "f-privacy"].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) { el.addEventListener("input", function () { showError(id, false); }); }
     if (el && el.type === "checkbox") { el.addEventListener("change", function () { showError(id, false); }); }
+  });
+  // E-Mail/Telefon: beide Fehler und aria-invalid zurücksetzen, sobald getippt wird
+  ["f-email", "f-phone"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) { return; }
+    el.addEventListener("input", function () {
+      var e1 = document.getElementById("err-email");
+      var e2 = document.getElementById("err-phone");
+      if (e1) { e1.hidden = true; }
+      if (e2) { e2.hidden = true; }
+      setReachInvalid(document.getElementById("f-email"), false);
+      setReachInvalid(document.getElementById("f-phone"), false);
+    });
   });
 
 })();
