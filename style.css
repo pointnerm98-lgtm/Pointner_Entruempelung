@@ -184,8 +184,11 @@ a:hover { color: var(--accent); }
 /* ---------- Hero ---------- */
 .hero {
   background:
-    radial-gradient(120% 90% at 85% -10%, var(--accent-soft) 0%, rgba(238,244,240,0) 60%),
-    var(--bg);
+    radial-gradient(70% 60% at 90% -12%, rgba(47,107,70,.22) 0%, rgba(47,107,70,0) 60%),
+    radial-gradient(55% 55% at 4% 115%, rgba(214,168,110,.20) 0%, rgba(214,168,110,0) 60%),
+    radial-gradient(80% 70% at 50% 120%, rgba(47,107,70,.10) 0%, rgba(47,107,70,0) 55%),
+    linear-gradient(160deg, #eaf3ed 0%, #ffffff 58%);
+  border-bottom: 1px solid var(--line);
   padding: clamp(3rem, 8vw, 6rem) 0 clamp(3rem, 7vw, 5rem);
 }
 .hero-inner { max-width: 780px; }
@@ -320,7 +323,8 @@ a:hover { color: var(--accent); }
   padding: clamp(1.5rem, 4vw, 2rem); box-shadow: var(--shadow);
 }
 .field { margin-bottom: 1.1rem; }
-.field-row { display: grid; gap: 1.1rem; grid-template-columns: 1fr; }
+/* Felder stehen durchgehend einzeln untereinander (eine Spalte) */
+.field-row { display: grid; gap: 0; grid-template-columns: 1fr; }
 .field label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: .4rem; }
 .field input, .field select, .field textarea {
   width: 100%; font: inherit; color: var(--ink);
@@ -391,7 +395,6 @@ a:hover { color: var(--accent); }
    Responsive
    ===================================================================== */
 @media (min-width: 620px) {
-  .field-row { grid-template-columns: 1fr 1fr; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .trust-grid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(3, 1fr); }
