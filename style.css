@@ -222,10 +222,10 @@ a:hover { color: var(--accent); }
 .hero-lead { font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--ink-soft); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .85rem; margin: 1.6rem 0 0; }
 
-/* Vertrauenszeile: volle Breite unter beiden Spalten, mit Trennlinie darüber */
+/* Vertrauenszeile: kompakt bei den Buttons (Desktop links, Mobil unter dem Bild) */
 .hero-trust {
-  display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 1.5rem;
-  list-style: none; margin: 2.25rem 0 0; padding: 1.75rem 0 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: .8rem 1.25rem;
+  list-style: none; margin: 1.6rem 0 0; padding: 1.35rem 0 0;
   border-top: 1px solid var(--line);
 }
 .hero-trust li { display: flex; align-items: flex-start; gap: .5rem; font-size: .92rem; font-weight: 500; color: var(--ink); }
@@ -522,10 +522,15 @@ a:hover { color: var(--accent); }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .trust-grid { grid-template-columns: repeat(3, 1fr); }
   .hv-grid { grid-template-columns: 1fr 1.05fr; align-items: center; gap: 3.5rem; }
-  /* Hero zweispaltig: links Text, rechts Vorher-Nachher-Vergleich */
-  .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 3rem; }
-  /* Vertrauenszeile in einer Reihe, gleichmäßig verteilt */
-  .hero-trust { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 2.75rem; }
+  /* Hero: Text links (über zwei Zeilen), Bild rechts oben, Vertrauensliste rechts unter dem Bild */
+  .hero-grid {
+    grid-template-columns: 1.05fr .95fr;
+    grid-template-areas: "text media" "text trust";
+    column-gap: 3rem; row-gap: 1.5rem;
+  }
+  .hero-text { grid-area: text; }
+  .hero-media { grid-area: media; }
+  .hero-trust { grid-area: trust; align-self: start; }
 }
 
 /* ---------- Mobile-Navigation ---------- */
